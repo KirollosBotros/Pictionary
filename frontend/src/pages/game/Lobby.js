@@ -10,7 +10,8 @@ export default class App extends Component {
     numPlayers: 1,
     maxPlayers: 0,
     gameCode: socket.id,
-    redir: false
+    redir: false,
+    setUp: []
   }
 
   componentWillUnmount() {
@@ -33,9 +34,14 @@ export default class App extends Component {
           gameCode: code
         });
     });
-    socket.on('redirectToGame', () => {
-       this.setState({redir: true});
-    })
+
+    socket.on('redirectToGame', (setUpArr) => {
+      this.setState({
+        setUp: setUpArr,
+        redir: true
+      });
+    });
+
     var list = [];
     for (var i = 0; i < this.state.players.length; i++){
       list.push(<h2 key={i}>{this.state.players[i]}{" joined\n"}</h2>);
@@ -57,7 +63,10 @@ export default class App extends Component {
     if(this.state.redir){
         return <Redirect to={{
                     pathname: '/game',
-                    state: { id: this.state.gameCode }
+                    state: { 
+                      id: this.state.gameCode,
+                      setup: this.state.setUp 
+                    }
                 }}
                 />
     }else if(this.props.creator && !first) {

@@ -13,6 +13,10 @@ const io = socket(server, {
     }
   });
 
+const getWords = () => {
+    return ["apple", "dog", "cat"];
+}
+
 io.on('connection', function(socket){
     const sessionID = socket.id;
     socket.on('createRoom', (data) => {
@@ -50,12 +54,15 @@ io.on('connection', function(socket){
         io.to(code).emit('drawing', data);
     });
     socket.on('startedGame', (code) => {
+        let setUpArr = {};
         for(var i = 0; i < gamesArr.length; i++){
             if(gamesArr[i].room === code){
                 gamesArr[i].closed = true;
+                setUpArr = gamesArr[i];
+                setUpArr.words = getWords(gamesArr[i].current);
             }
         }
-        io.to(code).emit('redirectToGame');
+        io.to(code).emit('redirectToGame', setUpArr);
         console.log("started game");
     })
 });
