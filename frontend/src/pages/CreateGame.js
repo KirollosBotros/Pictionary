@@ -18,10 +18,15 @@ export class CreateGame extends Component {
 
     render() {
         const formStyle = {
-            display: 'inline-block',
+            width: '20%',
+            height: '30%',
+            overflow: 'auto',
+            margin: 'auto',
             position: 'absolute',
-            top: '40%',
-            left: '42%'
+            top: '0',
+            left: '0',
+            bottom: '0',
+            right: '0'
         }
         return (
             <div>

@@ -44,7 +44,7 @@ export class App extends Component {
       <Router>
         {this.state.redirect ? <Redirect to='/lobby'></Redirect> : null}
         <div>
-        <Route exact path="/" component={WelcomePage}/>
+          <Route exact path="/" component={WelcomePage}/>
         <Route exact path="/game" component={Game}/>
 
         <Route

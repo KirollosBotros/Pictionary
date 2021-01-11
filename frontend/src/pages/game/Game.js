@@ -6,7 +6,7 @@ import BrushIcon from '@material-ui/icons/Brush';
 //import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 const WIDTH =  window.innerWidth;
-const HEIGHT = 0.85 * window.innerHeight;
+const HEIGHT = 0.80 * window.innerHeight;
 const timerSeconds = 45;
 var sec = timerSeconds;
 var second = timerSeconds;

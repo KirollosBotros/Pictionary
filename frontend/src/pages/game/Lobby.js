@@ -74,7 +74,7 @@ export default class App extends Component {
         return <div>
                 {gameCodeDisplay} 
                 {numPeople}
-                <button onClick={this.startGame} to='/game' type="button" style={{display:'block', margin: 'auto', width: '150px' }} className="btn btn-success">Start Game</button>
+                <button onClick={this.startGame} to='/game' type="button" style={{display:'block', margin: 'auto', width: '150px'}} className="btn btn-success">Start Game</button>
                 <hr></hr>   
                 {list}{"\n"}  
              </div>
