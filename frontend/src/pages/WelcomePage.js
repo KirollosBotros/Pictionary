@@ -24,7 +24,7 @@ export class WelcomePage extends Component {
 
         return (
             <div>
-                <Link to='/create-game' type="button" style={firstBtn} className="btn btn-primary">Create Gam</Link>
+                <Link to='/create-game' type="button" style={firstBtn} className="btn btn-primary">Create Game</Link>
                 <Link to ='/join-game' type="button" style={secondBtn} className="btn btn-success">Join Game</Link>
             </div>
         )
