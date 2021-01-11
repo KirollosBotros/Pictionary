@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import Sketch from "react-p5";
 import socket from '../../socketConfig';
 import BrushIcon from '@material-ui/icons/Brush';
+//import CheckIcon from '@material-ui/icons/Check';
+//import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 const WIDTH =  window.innerWidth;
 const HEIGHT = 0.85 * window.innerHeight;
-const timerSeconds = 10;
+const timerSeconds = 30;
 var sec = timerSeconds;
 var second = timerSeconds;
 
@@ -82,7 +84,7 @@ export default class App extends Component {
         socket.emit('guessedCorrect', this.state.gameCode, newCorrectArr);
       }else{
         this.setState({correct: false}, () => {
-          console.log(this.state.correct);
+          //console.log(this.state.correct);
         })
       }
     });
@@ -158,6 +160,18 @@ export default class App extends Component {
             textAlign: 'center',
             float: 'left'}
   }
+
+  const getCorrect = (name) => {
+    for(var i = 0; i < this.state.setUpArr.names.length; i++){
+      if(this.state.correctArr[i].name === name){
+        if(this.state.correctArr[i].correct){
+          return true;
+        }else{
+          return false;
+        }
+      }
+    }
+  }
     const formStyle = {
       display: 'inline-block',
       position: 'absolute',
@@ -166,20 +180,32 @@ export default class App extends Component {
     }
     //console.log(this.state.setUpArr);
     var list = [];
+    
     for(var i = 0; i < this.state.setUpArr.names.length; i++){
       list.push(<div key={i}><h4 style={styleTable(this.state.setUpArr.names[i])}>{this.state.setUpArr.names[i]+' '}<BrushIcon style = {{marginBottom: '4px'}} /></h4></div>);
     }
-    return( <div>
-      <div>
-      {list}
-      <span style={{userSelect: 'none', float: 'right', marginRight: '25px', marginTop: '13px', fontSize: '30px',fontFamily: 'Arial, Helvetica, sans-serif'}} id="timer"></span>
-      </div>
-      <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} keyTyped={this.keyTyped}/>   
-      <br></br>
-      <div style={formStyle} className="form-inline">
-        <input onChange={this.onChange} style={{width: '230px'}} className="form-control" aria-describedby="emailHelp" placeholder="Enter word" type="text" />
-        <button onClick={this.submitGuess} style={{marginLeft: '8px'}} type="submit" className="btn btn-primary">Guess</button>
-      </div>
-    </div>)
+
+    if(this.state.setUpArr.names[this.state.currentTurn] === this.state.name){
+      return( <div>
+        <div>
+        {list}
+        <span style={{userSelect: 'none', float: 'right', marginRight: '25px', marginTop: '13px', fontSize: '30px',fontFamily: 'Arial, Helvetica, sans-serif'}} id="timer"></span>
+        </div>
+        <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} keyTyped={this.keyTyped}/>   
+        <h2 style={{textAlign:'center'}}>Your word to draw is: <b>{this.state.setUpArr.words[this.state.wordNumber]}</b></h2>
+        </div>)
+    }else{
+      return( <div>
+        <div>
+        {list}
+        <span style={{userSelect: 'none', float: 'right', marginRight: '25px', marginTop: '13px', fontSize: '30px',fontFamily: 'Arial, Helvetica, sans-serif'}} id="timer"></span>
+        </div>
+        <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} keyTyped={this.keyTyped}/>   
+        <br></br>
+        <div style={formStyle} className="form-inline">
+          <input onChange={this.onChange} style={{width: '230px'}} className="form-control" aria-describedby="emailHelp" placeholder="Enter word" type="text" />
+        </div>
+      </div>)
+    }
   }
 } 
