@@ -12,7 +12,8 @@ export class App extends Component {
     redirect: false,
     isCreator: true,
     maxNum: 1,
-    creatorName: ''
+    creatorName: '',
+    playerN: ''
   }
 
   create = (playerName, maxPlayers) => {
@@ -21,7 +22,8 @@ export class App extends Component {
       this.setState({
         redirect: true,
         maxNum: maxPlayers,
-        creatorName: playerName
+        creatorName: playerName,
+        playerN: playerName
       });      
     });
   } 
@@ -31,7 +33,8 @@ export class App extends Component {
     socket.on('success', (playerName) => {
       this.setState({
         redirect: true,
-        isCreator: false
+        isCreator: false,
+        playerN: playerName
       });      
     });
   }
@@ -59,7 +62,8 @@ export class App extends Component {
           render={(props) => (
             <Lobby creator={this.state.isCreator} 
                   max={this.state.maxNum}
-                  creatorN={this.state.creatorName} />
+                  creatorN={this.state.creatorName} 
+                  playerName={this.state.playerN} />
           )}/>
         </div>
       </Router>

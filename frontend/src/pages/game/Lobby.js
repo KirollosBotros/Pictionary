@@ -65,7 +65,8 @@ export default class App extends Component {
                     pathname: '/game',
                     state: { 
                       id: this.state.gameCode,
-                      setup: this.state.setUp 
+                      setup: this.state.setUp,
+                      name: this.props.playerName
                     }
                 }}
                 />

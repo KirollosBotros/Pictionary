@@ -22,6 +22,7 @@ io.on('connection', function(socket){
     socket.on('createRoom', (data) => {
         let nameArr = [];
         nameArr.push(data.name);
+        let idArr = [];
         let val = {room: socket.id, names: nameArr, max: data.max, current: 1, closed: false};
         gamesArr.push(val);
         socket.emit('success');
@@ -65,4 +66,7 @@ io.on('connection', function(socket){
         io.to(code).emit('redirectToGame', setUpArr);
         console.log("started game");
     })
+    socket.on('clearedCanvas', (code) => {
+        io.to(code).emit('clearBoard');
+    });
 });
