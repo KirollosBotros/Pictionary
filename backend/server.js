@@ -56,17 +56,25 @@ io.on('connection', function(socket){
     });
     socket.on('startedGame', (code) => {
         let setUpArr = {};
+        let correctArr = [];
         for(var i = 0; i < gamesArr.length; i++){
             if(gamesArr[i].room === code){
                 gamesArr[i].closed = true;
                 setUpArr = gamesArr[i];
                 setUpArr.words = getWords(gamesArr[i].current);
+                for(var j = 0; j < gamesArr[i].names.length; j++){
+                    correctArr.push({name: gamesArr[i].names[j], correct: false});
+                }
             }
         }
+        setUpArr.correct = correctArr;
         io.to(code).emit('redirectToGame', setUpArr);
         console.log("started game");
     })
     socket.on('clearedCanvas', (code) => {
         io.to(code).emit('clearBoard');
+    });
+    socket.on('guessedCorrect', (code, arr) => {
+        io.to(code).emit('guessedRight', arr);
     });
 });
