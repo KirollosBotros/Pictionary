@@ -14,7 +14,18 @@ const io = socket(server, {
   });
 
 const getWords = () => {
-    return ["apple", "dog", "cat"];
+    return [
+            "apple", 
+            "dog",
+            "basketball", 
+            "tennis", 
+            "laptop",
+            "smoothie",
+            "mouse",
+            "america",
+            "school",
+            "wallet"
+        ];
 }
 
 io.on('connection', function(socket){

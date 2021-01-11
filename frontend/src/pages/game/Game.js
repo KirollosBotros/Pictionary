@@ -5,7 +5,7 @@ import BrushIcon from '@material-ui/icons/Brush';
 
 const WIDTH =  window.innerWidth;
 const HEIGHT = 0.85 * window.innerHeight;
-const timerSeconds = 60;
+const timerSeconds = 10;
 var sec = timerSeconds;
 var second = timerSeconds;
 
@@ -19,6 +19,7 @@ export default class App extends Component {
     setUpArr: this.props.location.state.setup,
     onTurn: false,
     currentTurn: 0,
+    wordNumber: 0,
     resetTimer: true,
     correct: false,
     correctArr: this.props.location.state.setup.correct,
@@ -49,11 +50,13 @@ export default class App extends Component {
           if(this.state.currentTurn === this.state.setUpArr.names.length -1){
             this.setState({
               currentTurn: 0,
+              wordNumber: this.state.wordNumber + 1,
               resetTimer: true
             });
           }else{
             this.setState({
               currentTurn: this.state.currentTurn + 1,
+              wordNumber: this.state.wordNumber + 1,
               resetTimer: true
             });
           }  
@@ -66,7 +69,7 @@ export default class App extends Component {
 
   onChange = (e) => {
     this.setState({guessedWordSoFar: e.target.value}, () => {
-      if(this.state.guessedWordSoFar === this.state.setUpArr.words[this.state.currentTurn]){
+      if(this.state.guessedWordSoFar === this.state.setUpArr.words[this.state.wordNumber]){
         console.log("True");
         let newCorrectArr = [];
         for(var i = 0; i < this.state.correctArr.length; i++){
