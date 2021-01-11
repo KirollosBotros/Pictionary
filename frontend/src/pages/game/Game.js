@@ -7,7 +7,7 @@ import BrushIcon from '@material-ui/icons/Brush';
 
 const WIDTH =  window.innerWidth;
 const HEIGHT = 0.85 * window.innerHeight;
-const timerSeconds = 30;
+const timerSeconds = 45;
 var sec = timerSeconds;
 var second = timerSeconds;
 
