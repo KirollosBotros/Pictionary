@@ -5,7 +5,7 @@ import BrushIcon from '@material-ui/icons/Brush';
 
 const WIDTH =  window.innerWidth;
 const HEIGHT = 0.85 * window.innerHeight;
-const timerSeconds = 20;
+const timerSeconds = 60;
 var sec = timerSeconds;
 var second = timerSeconds;
 
@@ -41,7 +41,6 @@ export default class App extends Component {
         second = sec - Math.floor(delta/1000);
         if(second === -1){
           socket.emit('clearedCanvas', this.state.gameCode);
-          //console.log(this.props.location.state.setup.correct);
           let resetCorrectArr = [];
           for(var i = 0; i < this.state.correctArr.length; i++){
             resetCorrectArr.push({name: this.state.setUpArr.names[i], correct: false});
@@ -76,15 +75,7 @@ export default class App extends Component {
           }else{
             newCorrectArr.push(this.state.correctArr[i]);
           }
-        }
-        console.log(newCorrectArr);
-        /** for(var i = 0; i < 7; i++){
-          if(i === 6){
-            newArr.push(newCorrectArr);
-          }else{
-            newArr.push(this.state.setUpArr[i]);
-          }
-        } **/
+        } 
         socket.emit('guessedCorrect', this.state.gameCode, newCorrectArr);
       }else{
         this.setState({correct: false}, () => {
@@ -92,15 +83,6 @@ export default class App extends Component {
         })
       }
     });
-  }
-
-  submitGuess = (e) => {
-    e.preventDefault();
-    this.setState({guessedWord: this.state.guessedWordSoFar});
-    if(this.state.guessedWord === this.state.setUpArr.words[this.state.currentTurn]){
-      this.setState({correct: true});
-      console.log(this.state.current);
-    }
   }
 
   setup = (p5, parent) => {
@@ -120,8 +102,6 @@ export default class App extends Component {
 
     socket.on('guessedRight', (arr) => {
       this.setState({correctArr: arr});
-      //this.setState({setUpArr: arr});
-      //console.log(this.state.correctArr);
     });
   }
     
@@ -166,15 +146,15 @@ export default class App extends Component {
     }
   }
 
-    const styleTable = (name) => {
-      return {backgroundColor: getColour(name),
-              padding: '10px',
-              margin: '10px',
-              borderRadius: '8px',
-              width: (WIDTH-150)/this.state.setUpArr.names.length,
-              textAlign: 'center',
-              float: 'left'}
-    }
+  const styleTable = (name) => {
+    return {backgroundColor: getColour(name),
+            padding: '10px',
+            margin: '10px',
+            borderRadius: '8px',
+            width: (WIDTH-150)/this.state.setUpArr.names.length,
+            textAlign: 'center',
+            float: 'left'}
+  }
     const formStyle = {
       display: 'inline-block',
       position: 'absolute',
