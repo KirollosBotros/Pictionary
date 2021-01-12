@@ -8,6 +8,8 @@ import BrushIcon from '@material-ui/icons/Brush';
 const WIDTH =  window.innerWidth;
 const HEIGHT = 0.80 * window.innerHeight;
 const timerSeconds = 45;
+var start = Date.now();
+
 var sec = timerSeconds;
 var second = timerSeconds;
 
@@ -37,7 +39,7 @@ export default class App extends Component {
 
   componentDidMount = () => {
     if(this.state.resetTimer){
-      var start = Date.now();
+      start = Date.now();
       setInterval(() => {
         document.getElementById("timer").innerHTML = second;
         var delta = Date.now() - start;
@@ -106,7 +108,43 @@ export default class App extends Component {
     });
 
     socket.on('guessedRight', (arr) => {
+      let count = 0;
       this.setState({correctArr: arr});
+      for(var i = 0; i < arr.length; i++){
+        if(arr[i].correct){
+          count++;
+        }
+      }
+      console.log("How many correct" + count);
+      console.log(arr.length);
+      setTimeout(() => {
+        
+      }, 300);
+      if(count === arr.length - 1){
+        setTimeout(() => {
+          socket.emit('clearedCanvas', this.state.gameCode);
+          let resetCorrectArr = [];
+          for(var i = 0; i < this.state.correctArr.length; i++){
+            resetCorrectArr.push({name: this.state.setUpArr.names[i], correct: false});
+          }
+          this.setState({correctArr: resetCorrectArr});
+          if(this.state.currentTurn === this.state.setUpArr.names.length -1){
+            this.setState({
+              currentTurn: 0,
+              wordNumber: this.state.wordNumber + 1,
+              resetTimer: true
+            });
+          }else{
+            this.setState({
+              currentTurn: this.state.currentTurn + 1,
+              wordNumber: this.state.wordNumber + 1,
+              resetTimer: true
+            });
+          }  
+          second = timerSeconds;
+          start = Date.now();
+        }, 500);
+      }
     });
   }
     
