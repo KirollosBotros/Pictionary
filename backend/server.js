@@ -1,7 +1,9 @@
+const ranWords = require('./wordsArr');
 const express = require('express');
 const socket = require('socket.io');
 const app = express();
 var gamesArr = [];
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -12,21 +14,31 @@ const io = socket(server, {
       origin: '*',
     }
   });
+    
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
 
 const getWords = () => {
-    return [
-            "apple", 
-            "dog",
-            "basketball", 
-            "tennis", 
-            "laptop",
-            "smoothie",
-            "mouse",
-            "america",
-            "school",
-            "wallet"
-        ];
+    return shuffle(ranWords);
 }
+
+console.log(getWords());
 
 io.on('connection', function(socket){
     const sessionID = socket.id;
