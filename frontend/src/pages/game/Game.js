@@ -5,9 +5,9 @@ import BrushIcon from '@material-ui/icons/Brush';
 //import CheckIcon from '@material-ui/icons/Check';
 //import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
-const WIDTH =  window.innerWidth;
+const WIDTH = window.innerWidth;
 const HEIGHT = 0.80 * window.innerHeight;
-const timerSeconds = 45;
+const timerSeconds = 60;
 var start = Date.now();
 
 var sec = timerSeconds;
@@ -91,9 +91,15 @@ export default class App extends Component {
       }
     });
   }
+  
+
+  centerCanvas = () => {
+    
+  }
 
   setup = (p5, parent) => {
-    p5.createCanvas(WIDTH, HEIGHT).parent(parent);
+    var cnv = p5.createCanvas(WIDTH, HEIGHT).parent(parent);
+
     p5.background(220,220,220);
 
     socket.on('drawing', (data) => {
@@ -194,7 +200,7 @@ export default class App extends Component {
             padding: '10px',
             margin: '10px',
             borderRadius: '8px',
-            width: (WIDTH-150)/this.state.setUpArr.names.length,
+            width: (WIDTH - (20 * (this.state.setUpArr.names.length + 1)) - 55)/ this.state.setUpArr.names.length,
             textAlign: 'center',
             float: 'left'}
   }
@@ -214,7 +220,8 @@ export default class App extends Component {
       display: 'inline-block',
       position: 'absolute',
       top: '94%',
-      left: '43%'
+      left: '43%',
+      margin: 'auto'
     }
     //console.log(this.state.setUpArr);
     var list = [];
@@ -246,4 +253,4 @@ export default class App extends Component {
       </div>)
     }
   }
-} 
+}
