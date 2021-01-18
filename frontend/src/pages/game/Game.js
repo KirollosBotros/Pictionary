@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Sketch from "react-p5";
 import socket from '../../socketConfig';
+import PersonIcon from '@material-ui/icons/Person';
 import BrushIcon from '@material-ui/icons/Brush';
-//import CheckIcon from '@material-ui/icons/Check';
-//import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import CheckIcon from '@material-ui/icons/Check';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 const WIDTH = window.innerWidth;
 const HEIGHT = 0.80 * window.innerHeight;
@@ -28,13 +29,19 @@ export default class App extends Component {
     correct: false,
     correctArr: this.props.location.state.setup.correct,
     guessedWord: '',
-    guessedWordSoFar: ''
+    guessedWordSoFar: '',
+    list: this.props.location.state.initialList,
+    first: true
   }
 
   componentWillUnmount() {
     this.setState = (state,callback)=>{
         return;
     };
+  }
+
+  componentWillMount = () => {
+    this.updateList();
   }
 
   componentDidMount = () => {
@@ -45,24 +52,25 @@ export default class App extends Component {
         var delta = Date.now() - start;
         second = sec - Math.floor(delta/1000);
         if(second === -1){
+          console.log("reached");
           socket.emit('clearedCanvas', this.state.gameCode);
           let resetCorrectArr = [];
           for(var i = 0; i < this.state.correctArr.length; i++){
             resetCorrectArr.push({name: this.state.setUpArr.names[i], correct: false});
           }
-          this.setState({correctArr: resetCorrectArr});
+          this.setState({correctArr: resetCorrectArr}, this.updateList);
           if(this.state.currentTurn === this.state.setUpArr.names.length -1){
             this.setState({
               currentTurn: 0,
               wordNumber: this.state.wordNumber + 1,
               resetTimer: true
-            });
+            }, this.updateList);
           }else{
             this.setState({
               currentTurn: this.state.currentTurn + 1,
               wordNumber: this.state.wordNumber + 1,
               resetTimer: true
-            });
+            }, this.updateList);
           }  
           second = timerSeconds;
           start = Date.now();
@@ -91,12 +99,7 @@ export default class App extends Component {
       }
     });
   }
-  
-
-  centerCanvas = () => {
-    
-  }
-
+ 
   setup = (p5, parent) => {
     var cnv = p5.createCanvas(WIDTH, HEIGHT).parent(parent);
 
@@ -115,7 +118,7 @@ export default class App extends Component {
 
     socket.on('guessedRight', (arr) => {
       let count = 0;
-      this.setState({correctArr: arr});
+      this.setState({correctArr: arr}, this.updateList);
       for(var i = 0; i < arr.length; i++){
         if(arr[i].correct){
           count++;
@@ -123,9 +126,7 @@ export default class App extends Component {
       }
       console.log("How many correct" + count);
       console.log(arr.length);
-      setTimeout(() => {
-        
-      }, 300);
+
       if(count === arr.length - 1){
         setTimeout(() => {
           socket.emit('clearedCanvas', this.state.gameCode);
@@ -133,19 +134,19 @@ export default class App extends Component {
           for(var i = 0; i < this.state.correctArr.length; i++){
             resetCorrectArr.push({name: this.state.setUpArr.names[i], correct: false});
           }
-          this.setState({correctArr: resetCorrectArr});
-          if(this.state.currentTurn === this.state.setUpArr.names.length -1){
+          this.setState({correctArr: resetCorrectArr}, this.updateList);
+          if(this.state.currentTurn === this.state.setUpArr.names.length - 1){
             this.setState({
               currentTurn: 0,
               wordNumber: this.state.wordNumber + 1,
               resetTimer: true
-            });
+            }, this.updateList);
           }else{
             this.setState({
               currentTurn: this.state.currentTurn + 1,
               wordNumber: this.state.wordNumber + 1,
               resetTimer: true
-            });
+            }, this.updateList);
           }  
           second = timerSeconds;
           start = Date.now();
@@ -178,25 +179,23 @@ export default class App extends Component {
     }
   }
 
-  render() {
-    const getColour = (Name) => {
-      if(this.state.setUpArr.names[this.state.currentTurn] === Name){
-        return '#e6ed15';
+  updateList = () => {
+    var tempList = [];
+    for(var i = 0; i < this.state.setUpArr.names.length; i++){
+      if(i === this.state.currentTurn){
+        tempList.push(<div key={i}><h4 style={this.styleTable(this.state.setUpArr.names[i])}>{this.state.setUpArr.names[i]+' '}<BrushIcon style = {{marginBottom: '4px', marginLeft: '9px'}} /></h4></div>);
+      }else if(this.state.correctArr[i].correct){
+        console.log(this.state.correctArr[i].correct);
+        tempList.push(<div key={i}><h4 style={this.styleTable(this.state.setUpArr.names[i])}>{this.state.setUpArr.names[i]+' '}<CheckIcon style = {{marginBottom: '4px', marginLeft: '5px'}} /></h4></div>);
       }else{
-        for(var i = 0; i < this.state.correctArr.length; i++){
-          if(this.state.correctArr[i].name === Name){
-            if(this.state.correctArr[i].correct){
-              return '#1ae310';
-            }else{
-              return '#acb5ac';
-            }
-        }
+        tempList.push(<div key={i}><h4 style={this.styleTable(this.state.setUpArr.names[i])}>{this.state.setUpArr.names[i]+' '}<HourglassEmptyIcon style = {{marginBottom: '4px', marginLeft: '5px'}} /></h4></div>);
       }
     }
+    this.setState({list: tempList});
   }
 
-  const styleTable = (name) => {
-    return {backgroundColor: getColour(name),
+  styleTable = (name) => {
+    return {backgroundColor: this.getColour(name),
             padding: '10px',
             margin: '10px',
             borderRadius: '8px',
@@ -205,17 +204,34 @@ export default class App extends Component {
             float: 'left'}
   }
 
-  const getCorrect = (name) => {
-    for(var i = 0; i < this.state.setUpArr.names.length; i++){
-      if(this.state.correctArr[i].name === name){
-        if(this.state.correctArr[i].correct){
-          return true;
-        }else{
-          return false;
+  getColour = (Name) => {
+    if(this.state.setUpArr.names[this.state.currentTurn] === Name){
+      return '#e6ed15';
+    }else{
+      for(var i = 0; i < this.state.correctArr.length; i++){
+        if(this.state.correctArr[i].name === Name){
+          if(this.state.correctArr[i].correct){
+            return '#1ae310';
+          }else{
+            return '#acb5ac';
+          }
+        }
+     }
+    }
+  }
+
+  render() {
+    const getCorrect = (name) => {
+      for(var i = 0; i < this.state.setUpArr.names.length; i++){
+        if(this.state.correctArr[i].name === name){
+          if(this.state.correctArr[i].correct){
+            return true;
+          }else{
+            return false;
+          }
         }
       }
     }
-  }
     const formStyle = {
       display: 'inline-block',
       position: 'absolute',
@@ -224,16 +240,12 @@ export default class App extends Component {
       margin: 'auto'
     }
     //console.log(this.state.setUpArr);
-    var list = [];
     
-    for(var i = 0; i < this.state.setUpArr.names.length; i++){
-      list.push(<div key={i}><h4 style={styleTable(this.state.setUpArr.names[i])}>{this.state.setUpArr.names[i]+' '}<BrushIcon style = {{marginBottom: '4px'}} /></h4></div>);
-    }
 
     if(this.state.setUpArr.names[this.state.currentTurn] === this.state.name){
       return( <div>
         <div>
-        {list}
+        {this.state.list}
         <span style={{userSelect: 'none', float: 'right', marginRight: '25px', marginTop: '13px', fontSize: '30px',fontFamily: 'Arial, Helvetica, sans-serif'}} id="timer"></span>
         </div>
         <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} keyTyped={this.keyTyped}/>   
@@ -242,7 +254,7 @@ export default class App extends Component {
     }else{
       return( <div>
         <div>
-        {list}
+        {this.state.list}
         <span style={{userSelect: 'none', float: 'right', marginRight: '25px', marginTop: '13px', fontSize: '30px',fontFamily: 'Arial, Helvetica, sans-serif'}} id="timer"></span>
         </div>
         <Sketch setup={this.setup} draw={this.draw} mouseDragged={this.mouseDragged} keyTyped={this.keyTyped}/>   
