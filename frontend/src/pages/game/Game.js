@@ -107,7 +107,7 @@ export default class App extends Component {
     this.setState({guessedWordSoFar: e.target.value}, () => {
       
       // If the player guessed right...
-      if(this.state.guessedWordSoFar === this.state.setUpArr.words[this.state.wordNumber]){
+      if(this.state.guessedWordSoFar.toLowerCase() === this.state.setUpArr.words[this.state.wordNumber]){
         console.log("True");
         let newCorrectArr = [];
         

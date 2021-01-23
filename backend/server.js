@@ -7,7 +7,7 @@ var gamesArr = [];
 
 const PORT = process.env.PORT || 3001;
 
-const server = app.listen(PORT, () => console.log("Server running on port 3001"));
+const server = app.listen(PORT, () => console.log("Server running on port ", PORT));
 
 const io = socket(server, {
     cors: {
@@ -15,34 +15,32 @@ const io = socket(server, {
     }
   });
     
-  function shuffle(array) {
+function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-  
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
-  
     return array;
-  }
+}
 
 const getWords = () => {
     return shuffle(ranWords);
 }
 
-console.log(getWords());
 
 io.on('connection', function(socket){
     const sessionID = socket.id;
     socket.on('createRoom', (data) => {
+        console.log("There are currently ", (gamesArr.length+1), " game(s)");
         let nameArr = [];
         nameArr.push(data.name);
         let idArr = [];

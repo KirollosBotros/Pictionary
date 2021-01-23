@@ -82,11 +82,10 @@ export default class App extends Component {
       return <div>
                 {gameCodeDisplay} 
                 {numPeople}
-                <button onClick={this.startGame} to='/game' type="button" style={{display:'block', margin: 'auto', width: '150px' }} className="btn btn-success">Start Game</button>
                 <hr></hr>   
                 {list}{"\n"}  
              </div>
-    }else{
+    }else if(this.props.creator){
       first = false;
       return <div>
                 {gameCodeDisplay} 
@@ -95,6 +94,14 @@ export default class App extends Component {
                 <hr></hr>   
                 <h2>{this.props.creatorN + ' joined\n'}</h2>
               </div>
-    } 
+    }else{
+      return <div>
+              {gameCodeDisplay} 
+              {numPeople}
+              <button onClick={this.startGame} to='/game' type="button" style={{display:'block', margin: 'auto', width: '150px' }} className="btn btn-success">Start Game</button>
+              <hr></hr>   
+              <h2>{this.props.creatorN + ' joined\n'}</h2>
+            </div>
+    }
   } 
-} 
+}
