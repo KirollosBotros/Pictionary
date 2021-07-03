@@ -11,6 +11,7 @@ var ranWords = [
     "wallet",
     'mailman',
     'bicycle',
+    'picnic',
     'comb',
     'turtle',
     'park',
