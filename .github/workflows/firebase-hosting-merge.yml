@@ -10,9 +10,9 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Installing dependencies
-        run: (cd frontend && npm install)
+      # - uses: actions/checkout@v2
+      # - name: Installing dependencies
+      #   run: (cd frontend && npm install)
       # - name: Building app
       #   run: (cd frontend && npm run build)
       #   env:
@@ -29,5 +29,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: pictionary-backend-server
           heroku_email: kirollosbotros@hotmail.com
-          appdir: /backend
+          appdir: Pictionary/backend
 
