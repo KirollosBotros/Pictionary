@@ -12,13 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Installing dependencies
-        working-directory: ./frontend
-        run: npm install
-      - name: Building app
-        working-directory: ./frontend
-        run: npm install
+        run: (cd frontend) && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          entrypoint: /frontend
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICTIONARY_FRONTEND }}'
           channelId: live
