@@ -13,21 +13,21 @@ jobs:
       - uses: actions/checkout@v2
       - name: Installing dependencies
         run: (cd frontend && npm install)
-      - name: Building app
-        run: (cd frontend && npm run build)
-        env:
-          CI: false
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          entryPoint: frontend
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICTIONARY_FRONTEND }}'
-          channelId: live
-          projectId: pictionary-frontend
+      # - name: Building app
+      #   run: (cd frontend && npm run build)
+      #   env:
+      #     CI: false
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     entryPoint: frontend
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICTIONARY_FRONTEND }}'
+      #     channelId: live
+      #     projectId: pictionary-frontend
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: pictionary-backend-server
           heroku_email: kirollosbotros@hotmail.com
-          appdir: backend
+          appdir: /backend
 
