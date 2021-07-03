@@ -29,5 +29,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: pictionary-backend-server
           heroku_email: kirollosbotros@hotmail.com
-          appdir: /backend
+          appdir: backend
 
