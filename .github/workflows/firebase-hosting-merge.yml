@@ -10,18 +10,18 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v2
-      # - name: Installing dependencies
-      #   run: (cd frontend && npm install)
-      # - name: Building app
-      #   run: (cd frontend && npm run build)
-      #   env:
-      #     CI: false
-      # - uses: FirebaseExtended/action-hosting-deploy@v0
-      #   with:
-      #     entryPoint: frontend
-      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
-      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICTIONARY_FRONTEND }}'
-      #     channelId: live
-      #     projectId: pictionary-frontend
+      - uses: actions/checkout@v2
+      - name: Installing dependencies
+        run: (cd frontend && npm install)
+      - name: Building app
+        run: (cd frontend && npm run build)
+        env:
+          CI: false
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          entryPoint: frontend
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PICTIONARY_FRONTEND }}'
+          channelId: live
+          projectId: pictionary-frontend
 
