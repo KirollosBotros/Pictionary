@@ -23,7 +23,7 @@ export class WelcomePage extends Component {
 
         return (
             <div>
-                <h1 style={{textAlign: 'center', marginTop: '20px'}}>Welcome to Pictionary!</h1>
+                <h1 style={{textAlign: 'center', marginTop: '20px'}}>Welcome to Pictionary! V2</h1>
                 <h2 style={{textAlign: 'center', marginTop: '20px'}}>Made by Kirollos Botros</h2>
                 <Link to='/create-game' type="button" style={firstBtn} className="btn btn-primary">Create Game</Link>
                 <Link to ='/join-game' type="button" style={secondBtn} className="btn btn-success">Join Game</Link>
