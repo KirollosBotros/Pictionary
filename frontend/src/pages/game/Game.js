@@ -13,7 +13,7 @@ const WIDTH = window.innerWidth;
 const HEIGHT = 0.80 * window.innerHeight;
 
 // Constants for timer setup
-const timerSeconds = 60;
+const timerSeconds = 5;
 var start = Date.now();
 var sec = timerSeconds;
 var second = timerSeconds;
